@@ -31,7 +31,7 @@ with open(inputpath, "r") as i:
 
             # over 10k lines use unquoted delimiters.
             # they can only fixed manually, so we have to drop them.
-            debug = False
+            debug = True
             if len(linearr) != numcols:
                 if debug:
                     print(f"invalid in line {index}: expected {numcols} but got {len(linearr)}")
