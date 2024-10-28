@@ -6,7 +6,7 @@ inputpath = get_current_dir().parent / "data" / "artvis_dump.csv"
 outputpath = get_current_dir().parent / "data" / "artvis_cleaned.csv"
 
 
-def get_location_info(latitude, longitude):
+def get_location_info(latitude, longitude): # takes 6 hours for full dataset, not feasible
     from geopy.exc import GeocoderTimedOut
     from geopy.geocoders import Nominatim
 
@@ -35,7 +35,7 @@ with open(inputpath, "r") as i:
         header = "".join([c for c in i.readline() if ord(c) < 128])  # remove non-ascii characters
         header = header.replace("\n", "")  # remove newline
         numcols = header.count(",") + 1
-        header += ",e.inferred_city,e.inferred_country"  # add inferred columns
+        # header += ",e.inferred_city,e.inferred_country"  # add inferred columns
         o.write(header + "\n")
 
         for index, line in tqdm(enumerate(i), total=inputlen):
@@ -90,7 +90,7 @@ with open(inputpath, "r") as i:
             16  e.city
             17  e.latitude
             18  e.longitude
-            
+
             19  e.inferred_city
             20  e.inferred_country
             """
@@ -176,21 +176,21 @@ with open(inputpath, "r") as i:
 
             # infer location
             # - if e.latitude and e.longitude are valid, location must be able to be inferred
-            linearr.append("null")
-            linearr.append("null")
-            if linearr[17] != "null" and linearr[18] != "null":
-                try:
-                    city, country = get_location_info(float(linearr[17]), float(linearr[18]))
-                    if city and country:
-                        linearr[19] = city
-                        linearr[20] = country
-                    else:
-                        raise ValueError
-                except ValueError:
-                    linearr[17] = "null"
-                    linearr[18] = "null"
-                    linearr[19] = "null"
-                    linearr[20] = "null"
+            # linearr.append("null")
+            # linearr.append("null")
+            # if linearr[17] != "null" and linearr[18] != "null":
+            #     try:
+            #         city, country = get_location_info(float(linearr[17]), float(linearr[18]))
+            #         if city and country:
+            #             linearr[19] = city
+            #             linearr[20] = country
+            #         else:
+            #             raise ValueError
+            #     except ValueError:
+            #         linearr[17] = "null"
+            #         linearr[18] = "null"
+            #         linearr[19] = "null"
+            #         linearr[20] = "null"
 
             o.write(",".join(linearr) + "\n")
             total += 1
