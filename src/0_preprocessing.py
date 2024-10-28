@@ -90,9 +90,6 @@ with open(inputpath, "r") as i:
             16  e.city
             17  e.latitude
             18  e.longitude
-
-            19  e.inferred_city
-            20  e.inferred_country
             """
 
             # validate format
