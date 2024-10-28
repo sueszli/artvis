@@ -37,6 +37,14 @@ dataset:
 
 - spatiotemporal and multivariate
 
+- Artist properties start with an "a.", exhibition properties with an "e."
+- The gener of an artist (a.gender) can be either "M" or "F" 
+- There might be uncertainty in the birth- and death dates (a.birthdate, a.deathdate) of the artists, i.e. missing months or days (e.g., "1866-01-01"). It is fine, if you only use the years and leave days and months out.
+- The exhibition type (e.type) might be group, solo, or auction. In group exhibitions and auctions multiple artists were featured, while in solo exhibitions only one artist exhibited their paintings.
+e.paintings denotes the number of paintings an artist exhibited in a certain exhibition
+- Be careful about the format of the exhibitions' latitude and longitude columns (e.latitude, e.longitude) when importing the csv into other programs! Check if they are still correct, otherwise you might get incorrect positions on a map.
+
+
 when you can't fit all information into a single visualization:
 
 - Select a time interval instead of the full range
@@ -63,18 +71,6 @@ In a first phase you will characterize the data as well as the user with their t
 Based on this you will design a concept for an interactive visualization that you believe effectively communicates the data well according to the users and tasks.
 A central element in this context are interaction methods to query, explore, and analyze the data visually.
 -->
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 

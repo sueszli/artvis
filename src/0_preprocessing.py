@@ -4,6 +4,9 @@ inputpath = get_current_dir().parent / "data" / "artvis_dump.csv"
 outputpath = get_current_dir().parent / "data" / "artvis_cleaned.csv"
 
 
+total = 0
+invalid = 0
+
 with open(inputpath, "r") as i:
     with open(outputpath, "w") as o:
         # turn header to utf-8
@@ -42,6 +45,7 @@ with open(inputpath, "r") as i:
                     for i, (a, b) in enumerate(zip(tmpheader, tmpline)):
                         print(f"{i:2d}: {a} -> {b}")
                     print("\n")
+                invalid += 1
                 continue
 
             # check format
@@ -50,9 +54,10 @@ with open(inputpath, "r") as i:
             # - linearr[4] must be a date with format "YYYY-MM-DD"
             # - linearr[5] must be a date with format "YYYY-MM-DD"
             # - linearr[12] must be a positive integer
+            # - linearr[13] must be "group" or "solo" or "auction"
             # - linearr[14] must be a positive integer
-            # - linearr[17] must be a decimal number
-            # - linearr[18] must be a decimal number
+            # - linearr[17] must be a latitude number
+            # - linearr[18] must be a longitude number
             if not linearr[0].isnumeric():
                 linearr[0] = "null"
             if linearr[3] not in ["M", "F"]:
@@ -63,16 +68,23 @@ with open(inputpath, "r") as i:
                 linearr[5] = "null"
             if not linearr[12].isnumeric():
                 linearr[12] = "null"
+            if linearr[13] not in ["group", "solo", "auction"]:
+                linearr[13] = "null"
             if not linearr[14].isnumeric():
                 linearr[14] = "null"
             try:
-                float(linearr[17])
-            except:
+                if (float(linearr[17]) < -90) or (90 < float(linearr[17])):
+                    linearr[17] = "null"
+            except ValueError:
                 linearr[17] = "null"
             try:
-                float(linearr[18])
-            except:
+                if (float(linearr[18]) < -180) or (180 < float(linearr[18])):
+                    linearr[18] = "null"
+            except ValueError:
                 linearr[18] = "null"
 
             line = ",".join(linearr)
             o.write(line + "\n")
+            total += 1
+
+print(f"total: {total}, invalid: {invalid}")
