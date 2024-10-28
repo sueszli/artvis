@@ -64,6 +64,23 @@ Based on this you will design a concept for an interactive visualization that yo
 A central element in this context are interaction methods to query, explore, and analyze the data visually.
 -->
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 # Exercise 2
 
 <!--
