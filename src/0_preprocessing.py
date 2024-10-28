@@ -1,37 +1,57 @@
+from tqdm import tqdm
+
 from utils import get_current_dir
 
 inputpath = get_current_dir().parent / "data" / "artvis_dump.csv"
 outputpath = get_current_dir().parent / "data" / "artvis_cleaned.csv"
 
 
+def get_location_info(latitude, longitude):
+    from geopy.exc import GeocoderTimedOut
+    from geopy.geocoders import Nominatim
+
+    try:
+        geolocator = Nominatim(user_agent="my_agent")
+        location = geolocator.reverse(f"{latitude}, {longitude}", language="en")
+        if location and location.raw.get("address"):
+            address = location.raw["address"]
+            city = address.get("city") or address.get("town") or address.get("village") or "Unknown"
+            country = address.get("country", "Unknown")
+            if city == "Unknown" or country == "Unknown":
+                return None, None
+            return city, country
+        return None, None
+    except (GeocoderTimedOut, Exception):
+        return None, None
+
+
 total = 0
 invalid = 0
 
+inputlen = len(open(inputpath).readlines())
+
 with open(inputpath, "r") as i:
     with open(outputpath, "w") as o:
-        # turn header to utf-8
-        header = "".join([c for c in i.readline() if ord(c) < 128])
-        header = header.replace("\n", "")
+        header = "".join([c for c in i.readline() if ord(c) < 128])  # remove non-ascii characters
+        header = header.replace("\n", "")  # remove newline
+        numcols = header.count(",") + 1
+        header += ",e.inferred_city,e.inferred_country"  # add inferred columns
         o.write(header + "\n")
 
-        numcols = header.count(",") + 1
-        for index, line in enumerate(i):
-            # drop "\N"
-            line = line.replace(",\\N", ",null")
+        for index, line in tqdm(enumerate(i), total=inputlen):
+            line = line.replace(",\\N", ",null")  # drop "\N"
 
             linearr = line.split(",")
             for i, _ in enumerate(linearr):
                 linearr[i] = linearr[i].strip()
-
-                # fix num of quotation marks
-                if '"' in linearr[i]:
+                if '"' in linearr[i]:  # fix num of quotation marks
                     linearr[i] = linearr[i].replace('"', "")
                 if "," in linearr[i]:
                     linearr[i] = '"' + linearr[i] + '"'
 
             # over 10k lines use unquoted delimiters.
             # they can only fixed manually, so we have to drop them.
-            debug = True
+            debug = False
             if len(linearr) != numcols:
                 if debug:
                     print(f"invalid in line {index}: expected {numcols} but got {len(linearr)}")
@@ -49,25 +69,30 @@ with open(inputpath, "r") as i:
                 continue
 
             """
-             0 a.id
-             1 a.firstname
-             2 a.lastname
-             3 a.gender
-             4 a.birthdate
-             5 a.deathdate
-             6 a.birthplace
-             7 a.deathplace
-             8 a.nationality
-             9 e.id
-            10 e.title
-            11 e.venue
-            12 e.startdate
-            13 e.type
-            14 e.paintings
-            15 e.country
-            16 e.city
-            17 e.latitude
-            18 e.longitude
+            columns:
+
+            00  a.id
+            01  a.firstname
+            02  a.lastname
+            03  a.gender
+            04  a.birthdate
+            05  a.deathdate
+            06  a.birthplace
+            07  a.deathplace
+            08  a.nationality
+            09  e.id
+            10  e.title
+            11  e.venue
+            12  e.startdate
+            13  e.type
+            14  e.paintings
+            15  e.country
+            16  e.city
+            17  e.latitude
+            18  e.longitude
+            
+            19  e.inferred_city
+            20  e.inferred_country
             """
 
             # validate format
@@ -102,10 +127,10 @@ with open(inputpath, "r") as i:
                 linearr[18] = "null"
 
             # validate date range
-            # a.birthdate must be a date with format "YYYY-MM-DD" and range 1400-2024
-            # a.deathdate must be a date with format "YYYY-MM-DD" and range 1500-2024
-            # the life span must be less than 150 years
-            # e.startdate must be a year with format "YYYY" and range 1900-2000
+            # - a.birthdate must be a date with format "YYYY-MM-DD" and range 1400-2024
+            # - a.deathdate must be a date with format "YYYY-MM-DD" and range 1500-2024
+            # - the life span must be less than 150 years
+            # - e.startdate must be a year with format "YYYY" and range 1900-2000
             try:
                 birthdate = linearr[4].split("-")
                 if len(birthdate) != 3:
@@ -148,6 +173,24 @@ with open(inputpath, "r") as i:
                     raise ValueError
             except ValueError:
                 linearr[12] = "null"
+
+            # infer location
+            # - if e.latitude and e.longitude are valid, location must be able to be inferred
+            linearr.append("null")
+            linearr.append("null")
+            if linearr[17] != "null" and linearr[18] != "null":
+                try:
+                    city, country = get_location_info(float(linearr[17]), float(linearr[18]))
+                    if city and country:
+                        linearr[19] = city
+                        linearr[20] = country
+                    else:
+                        raise ValueError
+                except ValueError:
+                    linearr[17] = "null"
+                    linearr[18] = "null"
+                    linearr[19] = "null"
+                    linearr[20] = "null"
 
             o.write(",".join(linearr) + "\n")
             total += 1
