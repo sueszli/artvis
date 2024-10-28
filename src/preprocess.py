@@ -7,8 +7,10 @@ outputpath = get_current_dir().parent / "data" / "artvis_cleaned.csv"
 
 with open(inputpath, "r") as i:
     with open(outputpath, "w") as o:
-        header = i.readline()
-        o.write(header)  # keep as is
+        # turn header utf-8
+        header = "".join([c for c in i.readline() if ord(c) < 128]) # utf-8
+        header = header.replace("\n", "")
+        o.write(header + "\n")
         
         numcols = header.count(",") + 1
         for index, line in enumerate(i):
@@ -16,32 +18,32 @@ with open(inputpath, "r") as i:
             # replace "\N" with "null"
             line = line.replace(",\\N", ",null")
 
-            line = line.split(",")
-            for i, item in enumerate(line):
-                line[i] = item.strip()
+            linearr = line.split(",")
+            for i, _ in enumerate(linearr):
+                linearr[i] = linearr[i].strip()
 
                 # either drop or keep a single quote
-                if '"' in item and "," in item:
-                    line[i] = '"' + item.replace('"', "") + '"'
-                elif '"' in item:
-                    line[i] = item.replace('"', "")
+                if '"' in linearr[i]:
+                    linearr[i] = linearr[i].replace('"', "")
+                if ("," in linearr[i]) or ("'" in linearr[i]):
+                    linearr[i] = '"' + linearr[i] + '"'
+
 
 
             # validate col count
-            # if len(line) != numcols:
-            #     print(f"invalid: {line}\n")
+            if len(linearr) != numcols:
+                print(f"invalid @ index {index}: expected {numcols} but got {len(linearr)}")
+                tmpheader = header.split(",")
+                tmpline = linearr
+                while len(tmpheader) < len(tmpline):
+                    tmpheader.append("null")
+                while len(tmpline) < len(tmpheader):
+                    tmpline.append("null")
+                assert len(tmpheader) == len(tmpline)
+                for i, (a, b) in enumerate(zip(tmpheader, tmpline)):
+                    print(f"{i:2d}: {a} -> {b}")
+                print("\n")
 
-            # # validate gender
-            # if line[3].capitalize() not in ["M", "F"]:
-            #     line[3] = "null"
 
-            # # validate dates
-            # line[4] = line[4].replace('"', "")
-            # if not (line[4].count("-") == 2) and not (line[4] == "null"):
-            #     line[4] = "null"
-            # line[5] = line[5].replace('"', "")
-            # if not (line[5].count("-") == 2) and not (line[5] == "null"):
-            #     line[5] = "null"
-        
-            line = ",".join(line)
-            o.write(line)
+            line = ",".join(linearr)
+            o.write(line + "\n")
