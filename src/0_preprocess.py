@@ -1,7 +1,7 @@
 from utils import get_current_dir
 
 inputpath = get_current_dir().parent / "data" / "artvis_dump.csv"
-outputpath = get_current_dir().parent / "data" / "artvis_cleaned_v1.csv"
+outputpath = get_current_dir().parent / "data" / "artvis_cleaned_v0.csv"
 
 line_count = 0
 err_count = 0
