@@ -292,8 +292,6 @@ Overall, these visualizations provide insights into the geographic focus, artist
 
 The culmination of our efforts are 2 interactive interactive visualizations, each designed to highlight different aspects of the dataset while ensuring a cohesive user experience.
 
-#### Insights
-
 At the heart of the first visualization lies a world map that serves as a spatial reference point for exhibition locations. This map is complemented by a series of interactive charts that provide insights into various dimensions of the data, including temporal trends and comparative analyses across countries and venues. By employing brushing and linking techniques, users can select specific regions on the map to filter data in real-time across all visual components. This interactivity not only enhances user engagement but also facilitates deeper exploration of the dataset.
 
 The map itself is designed with clarity in mind, utilizing light gray fill colors for countries and distinct circles for exhibition locations. The size of these circles corresponds to the number of exhibitions held at each venue, providing an immediate visual cue regarding the density of artistic activity in different regions. Tooltips are integrated into the map, offering detailed information about each exhibition location when users hover over the circles. This feature enriches the user experience by providing context without cluttering the visual space.
@@ -312,11 +310,30 @@ Feedback from initial testing sessions ($n=5$ colleagues) indicated that users a
 
 Reflecting on our choice of visualization techniques, it is evident that employing linked views significantly enhances data exploration capabilities. The brushing technique allows for coordinated views across multiple visualizations, enabling users to draw connections between disparate data points seamlessly. This approach aligns well with our goal of facilitating historical network analysis and geographic movement patterns among artists. However, it is important to acknowledge certain limitations inherent in our design. While we aimed for clarity and interactivity, some users expressed a desire for additional contextual information or metadata about specific exhibitions or artists directly within the visualizations. Future iterations could benefit from incorporating more detailed annotations or expandable panels that provide richer narratives without overwhelming users with information.
 
-![Visualization 1: Geospacial Querying](docs/assets/map.png){ width=60% }
+![Geospacial Querying](docs/assets/map.png){ width=80% }
 
 ## Visualization 2: Temporal Querying
 
-![Visualization 2: Temporal Querying](docs/assets/animation.png){ width=60% }
+Finally we look into the second interactive visualization, "Temporal Querying", while also drawing comparisons with the first visualization, "Geospatial Querying". 
+
+The "Temporal Querying" visualization employs a dynamic scatter plot and an animated timeline to showcase the evolution of art exhibitions over time. This visualization focuses on the temporal dimension of the dataset, allowing users to observe trends in exhibition activities from 1905 to 1915. The scatter plot displays exhibition locations on a world map, with points representing the number of paintings exhibited at various venues. The size and color of these points correspond to the volume of exhibitions, providing immediate visual feedback about artistic activity across different years.
+One of the standout features of this visualization is its animation capability. As users interact with a slider that represents different years, they can witness how exhibitions proliferated or diminished over time. This temporal aspect not only enhances user engagement but also provides a narrative flow that can help users identify peak periods of artistic activity and hypothesize about external influences—such as political events or cultural shifts—that may have contributed to these trends.
+
+#### Comparison with Geospatial Querying
+
+While both visualizations utilize a geographical framework, their approaches differ significantly in focus and functionality. The "Geospatial Querying" visualization emphasizes spatial relationships, showcasing where exhibitions occurred across Europe and beyond. It employs brushing and linking techniques that allow users to select specific regions on the map, which subsequently filters data across other visual components such as bar charts and line graphs. This interactivity enables users to explore geographic patterns in exhibition practices effectively. In contrast, "Temporal Querying" shifts attention from space to time. By allowing users to animate through years, it emphasizes how exhibition practices evolved temporally rather than spatially. This distinction is crucial; while "Geospatial Querying" helps users understand where art was displayed, "Temporal Querying" provides insights into when these displays occurred and how they changed over time.
+
+#### Interactivity and User Engagement
+
+Both visualizations prioritize user engagement through interactivity but do so in complementary ways. The "Geospatial Querying" visualization invites users to explore spatial distributions and relationships through direct interaction with the map and associated charts. Users can brush selections on various components, allowing for a multifaceted exploration of data that highlights connections between artists, venues, and countries. Conversely, "Temporal Querying" enhances engagement through its animation feature. The ability to slide through time creates a compelling narrative that draws users into the historical context of modern art exhibitions. Users are encouraged not only to observe but also to reflect on how artistic practices were influenced by broader societal changes across different years.
+
+#### Critical Assessment of Visualization Techniques
+
+One of the key strengths of this visualization is its interactivity. The brushing and linking techniques allow users to select specific regions on the map, dynamically filtering related data across other visual components. However, while the visualization excels in clarity and interactivity, it does have limitations. Feedback from initial testing indicated that some users desired more contextual information about specific exhibitions or artists directly within the visualization. The absence of expandable panels or detailed annotations can hinder a comprehensive understanding of the data for those less familiar with the subject matter. Future iterations could address this by incorporating tooltips or hover features that provide additional metadata without cluttering the visual space.
+
+Additionally, while it effectively highlights temporal trends, it may benefit from additional contextual layers that explain significant historical events or movements influencing exhibition practices during specific years. Integrating such context could provide users with a more nuanced understanding of how external factors shaped modern art exhibitions.
+
+![Temporal Querying](docs/assets/animation.png){ width=80% }
 
 #### Conclusion
 
