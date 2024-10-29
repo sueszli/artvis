@@ -6,7 +6,7 @@ inputpath = get_current_dir().parent / "data" / "artvis_dump.csv"
 outputpath = get_current_dir().parent / "data" / "artvis_cleaned.csv"
 
 
-def get_location_info(latitude, longitude): # takes 6 hours for full dataset, not feasible
+def get_location_info(latitude, longitude):  # takes 6 hours for full dataset, not feasible
     from geopy.exc import GeocoderTimedOut
     from geopy.geocoders import Nominatim
 
