@@ -214,6 +214,60 @@ These improvements would enhance the system's analytical capabilities while main
 
 While the proposed visualization concepts differ in their focus and design, both aim to provide users with a powerful tool for exploring the rich ArtVis dataset. By combining spatial, relational and temporal perspectives, the visualizations offer a comprehensive view of early 20th-century European art history. The designs prioritize clarity, interactivity and user control, ensuring that domain experts can extract valuable insights from the data while maintaining a high level of engagement.
 
+## Concept Design 3: Dynamic Exhibition Participation Map
+
+![Dynamic Exhibition Participation Map](docs/assets/concept3.png)
+
+The "Dynamic Exhibition Participation Map" visualization concept presents a comprehensive system for understanding the evolving relationships between artists and exhibitions, using a combination of geographic, temporal, and relational elements.
+
+#### Core Visualization Components
+
+This visualization integrates three primary components: a geographic base map, a dynamic network graph, and an interactive temporal slider. Together, these components enable users to explore the shifting relationships between artists and exhibitions over time, emphasizing the evolution of participation patterns across both geographic and temporal dimensions.
+
+The geographic map, built on a light, minimalist tile layer, serves as the foundation for positioning artists and exhibitions based on their respective geographic coordinates. Artist nodes are located by birthplace, while exhibition nodes represent venues across Europe, allowing users to examine the spatial distribution of artistic activities.
+
+The network graph dynamically connects artist nodes to exhibition nodes, representing participation in specific events. A temporal slider allows users to control the visibility of these relationships by filtering based on the selected year. This integration of network connectivity with geographic and temporal perspectives provides a holistic view of how artists and exhibitions interacted over time.
+
+#### Visual Encodings and Mappings
+
+Artists and exhibitions are represented as two distinct types of nodes, each with its own visual identity. Artists are represented by colored nodes, each artist having a unique, distinct color to ensure clear visual separation, while exhibitions are depicted as consistently colored nodes. The edges between nodes indicate relationships, representing artist participation in a given exhibition.
+
+Node placement on the map is based on geographic coordinates: artists are placed at their birthplaces, and exhibitions are positioned at their venue locations. This spatial mapping allows users to see the geographical spread and connections of artistic activity across Europe.
+
+The temporal dimension is controlled by a slider that adjusts the visibility of nodes and edges. Only artists and exhibitions active within the selected timeframe are shown, allowing users to explore temporal shifts in artistic collaboration and participation.
+
+#### Interactive Features and User Support
+
+The interactive features include:
+
+- Temporal Slider: The slider enables users to filter the network by year, revealing how relationships between artists and exhibitions developed over time. As users move the slider, nodes and edges dynamically appear or disappear, highlighting active connections during the selected period.
+
+- Interactive Nodes: Nodes can be hovered over to reveal detailed information about the artist or exhibition, including their names and relevant metadata. This helps users gain insights into specific participants without overwhelming visual clutter.
+
+- Linked Views: The map and network graph are tightly linked. The geographic coordinates anchor the nodes, while the edges reveal the relationships between them. The interplay between these views allows users to simultaneously explore spatial and network patterns.
+
+#### Design Specifics and Rationale
+
+The layout integrates a geographic base map with an overlay of network relationships, allowing users to intuitively understand the spatial context of artist-exhibition interactions. By combining geographic positioning with network edges, the visualization provides both a macro view of spatial relationships and a micro view of individual connections.
+
+The use of color is minimal and consistent: artist nodes are color-coded individually, while exhibition nodes share a unified color, ensuring that the emphasis remains on connections rather than overwhelming users with complex visual encodings. The straightforward color scheme also aids in distinguishing the temporal slider’s effects on the visualization.
+
+The map tile employs a light, unobtrusive design to avoid distracting from the data, ensuring that geographic features provide context without taking visual precedence over the nodes and edges.
+
+#### Potential Improvements
+
+Several enhancements could further enhance the visualization:
+
+- Node Size Encoding: Adjusting node size based on exhibition significance or artist influence could provide additional insight without sacrificing clarity.
+
+- Community Detection: Applying clustering techniques could help highlight sub-networks or communities within the artist-exhibition relationships, revealing patterns of collaboration or regional artistic movements.
+
+- Enhanced Interaction: Allowing users to select individual nodes and see all related connections highlighted could improve the exploration of artist trajectories and collaborations.
+
+- Additional Metadata Integration: Including extra information, such as the number of works exhibited or exhibition themes, could enrich the user experience by providing deeper context on hover.
+
+This design strikes a balance between simplicity and depth, allowing users to explore the evolution of early modern European art by understanding how artists moved and exhibited their works across geographic and temporal boundaries. The dynamic nature of the visualization provides an engaging, interactive platform for uncovering the complexity of artistic relationships in a spatial-temporal context.
+
 # Exercise 2
 
 <!--
@@ -271,6 +325,8 @@ To select the right visualization library, we evaluated several options based on
 [^src1]: Northwestern University Research Computing - https://sites.northwestern.edu/researchcomputing/2022/02/03/what-is-the-best-interactive-plotting-package-in-python/
 [^src2]: Comparative Notebook on Interactive Python Plotting Packages - https://github.com/ageller/comparePythonInteractives/blob/main/compareInteractives.ipynb
 
+For the "Dynamic Exhibition Participation Network" visualization, we selected Bokeh due to its capability to create complex, interactive network graphs combined with map tiles, which was essential for effectively visualizing the spatial distribution and connections between artists and exhibitions. Bokeh's integration with networkx allowed us to build a customized and visually compelling representation of artist-exhibition relationships while providing sufficient flexibility for adding interactivity, such as the time slider and hover tooltips. This combination of features made Bokeh a suitable choice for fulfilling the requirements of this visualization, enabling both geographic and temporal data to be seamlessly displayed in an engaging, user-friendly interface.
+
 Several visualizations were created to uncover patterns and insights. Five of our many exploratory visualizations are shown below. 
 
 - *Geographic Distribution of Exhibitions*: The scatter plot of geographic distribution shows that most exhibitions were concentrated in Europe, particularly around central longitudes and latitudes. This suggests a focus on European art scenes during the early 20th century, with fewer exhibitions occurring in North America and Asia.
@@ -314,7 +370,7 @@ Reflecting on our choice of visualization techniques, it is evident that employi
 
 ## Visualization 2: Temporal Querying
 
-Finally we look into the second interactive visualization, "Temporal Querying", while also drawing comparisons with the first visualization, "Geospatial Querying". 
+Then we look into the second interactive visualization, "Temporal Querying", while also drawing comparisons with the first visualization, "Geospatial Querying". 
 
 The "Temporal Querying" visualization employs a dynamic scatter plot and an animated timeline to showcase the evolution of art exhibitions over time. This visualization focuses on the temporal dimension of the dataset, allowing users to observe trends in exhibition activities from 1905 to 1915. The scatter plot displays exhibition locations on a world map, with points representing the number of paintings exhibited at various venues. The size and color of these points correspond to the volume of exhibitions, providing immediate visual feedback about artistic activity across different years.
 One of the standout features of this visualization is its animation capability. As users interact with a slider that represents different years, they can witness how exhibitions proliferated or diminished over time. This temporal aspect not only enhances user engagement but also provides a narrative flow that can help users identify peak periods of artistic activity and hypothesize about external influences—such as political events or cultural shifts—that may have contributed to these trends.
@@ -334,6 +390,26 @@ One of the key strengths of this visualization is its interactivity. The brushin
 Additionally, while it effectively highlights temporal trends, it may benefit from additional contextual layers that explain significant historical events or movements influencing exhibition practices during specific years. Integrating such context could provide users with a more nuanced understanding of how external factors shaped modern art exhibitions.
 
 ![Temporal Querying](docs/assets/animation.png){ width=80% }
+
+## Visualization 3: Dynamic Exhibition Participation Network
+
+The third visualization, "Dynamic Exhibition Participation Network," provides an interactive exploration of the relationships between artists and exhibitions, focusing specifically on the twenty most frequently occurring artists in our dataset. This visualization seeks to highlight both the spatial and network dimensions of artistic activity by depicting each artist's birthplace and their corresponding exhibition locations.
+
+The visualization is anchored on a geographical map, enriched with a dynamic network graph that connects artists to exhibitions across Europe. Each artist node is linked to multiple exhibition nodes, providing a clear representation of participation patterns and cultural connections over time. The network component not only emphasizes the breadth of exhibitions attended by individual artists but also reveals shared locations among the most active artists, underlining their role in establishing prominent artistic centers. The inclusion of a time slider allows users to explore the temporal aspect of artist participation from 1905 to 1915. By adjusting the year, users can dynamically filter the edges of the network, effectively tracing each artist's historical journey and revealing the exhibitions they participated in during different periods.
+
+The visualization also features a word cloud representing the names of these twenty artists, serving as an additional entry point for users. It provides an overview of the key figures represented in the dataset, adding a contextual layer to the relationships shown on the map. This word cloud, coupled with the dynamic network, helps users quickly identify important contributors to the artistic landscape of the early 20th century.
+
+![Word Cloud](docs/assets/wordcloud.png){ width=80% }
+
+#### Network Analysis and Visual Impact
+
+The "Dynamic Exhibition Participation Network" blends spatial data with network visualization to provide insights into the mobility and influence of artists. Unlike the previous visualizations that focused primarily on temporal or geographic dimensions, this network emphasizes the relationships between individuals and venues, thereby presenting an alternative lens through which to view artistic movements. This visual format reveals clusters of activity and highlights significant nodes that were pivotal in connecting artists across various locations.
+
+#### Interactive Exploration
+
+Interactivity plays a key role in the usability of this visualization. Users can hover over nodes to access additional information. The slider enables an interactive exploration of changing connections over time, encouraging users to consider how historical events and shifts in cultural hubs might have influenced the movement and participation of artists during this formative period in modern art history.
+
+![Dynamic Exhibition Participation Network](docs/assets/Dynamic_Exhibition_Participation_Map.PNG){ width=80% }
 
 #### Conclusion
 
